@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  has_secure_password
   
   validates :role, inclusion: { in: %w(user admin) }
   validates :email, :password, :role, :money, presence: true

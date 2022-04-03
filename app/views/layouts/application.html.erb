@@ -49,6 +49,18 @@
                 </ul>
                 </li>
             </ul>
+
+            <% if $User.present? %>
+            <span>
+                <a href="/my-account">
+                  <button type="button" class="btn btn-success">Аккаунт</button>
+                </a>         
+                <form action="/user/logout" method="POST" style="display:inline-block;">
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <button type="submit" class="btn btn-success">Выйти</button>
+                </form>
+            </span>
+            <% else %>
             <span>
                 <a href="/user/new">
                   <button type="button" class="btn btn-success">Регистрация</button>
@@ -57,10 +69,16 @@
                 <button type="button" class="btn btn-success">Вход</button>
                 </a>
             </span>
+            <% end %>
             </div>
         </div>
     </nav>
 
+    <% flash.each do |type, msg| %>
+      <div class="alert alert-info">
+        <%= msg %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>

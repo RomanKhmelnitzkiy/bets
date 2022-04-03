@@ -1,0 +1,46 @@
+<head>
+  <style>
+    body {
+      width: 700px;
+    }
+    </style>
+</head>
+
+<body>
+  <h2 style="text-align: center">Создание события</h2>
+  <div>
+    <form action="/event/create" method="POST">
+      <div class="form-floating mb-3">
+        <input type="datetime" class="form-control" name="dattime">
+        <label for="floatingInput">Дата и время</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="team1">
+        <label for="floatingInput">Первая команда</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="team2">
+        <label for="floatingInput">Вторая команда</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="win_ratio_1">
+        <label for="floatingInput">Победит первая команда</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="win_ratio_2">
+        <label for="floatingInput">Победит вторая команда</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="draw_ratio">
+        <label for="floatingInput">Ничья</label>
+      </div>
+      <div class="form-floating">
+        <input class="form-control" name="category">
+        <label for="floatingInput">Категория</label>
+      </div>
+      <hr>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-primary" style="width: 700px;">Создать</button>
+    </form>
+  </div>
+</body>

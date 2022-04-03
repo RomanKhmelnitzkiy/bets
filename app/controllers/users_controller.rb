@@ -9,15 +9,17 @@ class UsersController < ApplicationController
   end
 
   def create
-    if User.find_by(email: [:email]).nil?
-      @user = User.new({email: params[:email], password: params[:password], role: "user", money: 0})
-      if @user.save
-        flash[:success] = "Добро пожаловать, #{@user.email}"
-        redirect_to "/my-account/#{@user.id}"
+    if User.find_by(email: [:email]).present?
+      $User = User.new({email: params[:email], password: params[:password], role: "user", money: 0})
+      if $User.save
+        redirect_to "/my-account"
+        flash[:alert] = "Добро пожаловать, #{$User.email}."
       else
+
       end
     else
-      flash[:success] = "Пользователь с таким email уже существует"
+      redirect_to "/user/new"
+      flash[:success] = "Пользователь с таким email уже существует."
     end
   end
     
@@ -25,55 +27,100 @@ class UsersController < ApplicationController
   end
 
   def login_post
-    @user = User.find_by email: params[:email]
-    if @user&.authenticate(params[:password])
-      redirect_to "/user/my-account/#{@user.id}"
-    else 
+    $User = User.find_by email: params[:email]
+    if $User.nil?
       redirect_to "/user/login"
+      flash[:alert] = "Логин и/или пароль неверный."
+    else 
+      redirect_to "/my-account"
+      flash[:alert] = "Добро пожаловать, #{$User.email}."
     end
   end
 
   def logout
-
+    $User = nil
+    redirect_to "/"
   end
 
   def account
-    @account = User.find(params[:id])
+    begin
+      @account = $User
+      redirect_to "/" if @account.nil?
+    rescue 
+      redirect_to "/"
+    end
   end
     
   def mybets
-    @mybets = User.find(params[:id])
+    begin
+      @mybets = Bet.all.select {|as| as.user_id = $User.id}
+      redirect_to "/" if @mybets.nil?
+    rescue
+      redirect_to "/"
+    end
   end
   
   def statement
-    @stat = User.find(params[:id]).account_statements
+    begin
+      @stat = AccountStatement.all.select {|as| as.user_id = $User.id} 
+      redirect_to "/" if @stat.nil?
+    rescue
+      redirect_to "/"
+    end
   end
 
   def deposit
-    @user = User.find(params[:id]).bets
+    begin
+      redirect_to "/" if $User.nil?
+    rescue 
+      redirect_to "/"
+    end
   end
 
   def make_deposit
-    if @@User.role == "user"
-      @@User.update!(money: @@User.money + params[:money].to_f)
-      deposit = AccountStatement.create(amount: -params[:money], user_id: @@User.id)
-      render :json => {"message": "Deposit is done"}
+    begin
+      if $User.role == "user"
+        deposit = AccountStatement.create(amount: "-#{params[:money]}", user_id: $User.id)
+        $User.update!(money: $User.money + params[:money].to_f)
+        redirect_to "/my-account"
+        flash[:alert] = "Счет пополнен."
+      elsif $User.role == "admin"
+        redirect_to "/my-account"
+        flash[:alert] = "Админ не может пополнить счет."
+      end
+    rescue
+      redirect_to "/"
+      flash[:alert] = "Пожалуйста, войдите в аккаунт."
     end
   end
   
   def withdraw
-    @user = User.find(params[:id])
+    begin
+      redirect_to "/" if $User.nil?
+    rescue 
+      redirect_to "/"
+    end
   end
 
   def make_withdraw
-    if @@User.role == "user"
-      if @@User.money >= params[:money].to_f
-        @@User.update!(money: @@User.money - params[:money].to_f)
-        withdraw = AccountStatement.create(amount: +params[:money], user_id: @@User.id)
-        render :json => {"message": "Withdraw is done"}
-      else
-        render :json => {"message": "You don't have enough money"}
+    begin
+      if $User.role == "user"
+        if $User.money >= params[:money].to_f
+          withdraw = AccountStatement.create(amount: +params[:money], user_id: $User.id)
+          $User.update!(money: $User.money - params[:money].to_f)
+          redirect_to "/my-account"
+          flash[:alert] = "Вывод средств выполнен."
+        else
+          redirect_to "/my-account"
+          flash[:alert] = "У вас недостаточно средств."
+        end
+      elsif $User.role == "admin"
+        redirect_to "/my-account"
+        flash[:alert] = "Админ не может вывести средства."
       end
+    rescue
+      redirect_to "/"
+      flash[:alert] = "Пожалуйста, войдите в аккаунт."
     end
   end
   
