@@ -1,0 +1,22 @@
+<head>
+  <style>
+    body {
+      width: 700px;
+    }
+    </style>
+</head>
+
+<body>
+  <h2 style="text-align: center">Пополнить счет</h2>
+  <div>
+    <form action="/deposit" method="POST">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="money">
+        <label for="floatingInput">Введите сумму</label>
+      </div>
+      <hr>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-primary" style="width: 700px;">Продолжить</button>
+    </form>
+  </div>
+</body>

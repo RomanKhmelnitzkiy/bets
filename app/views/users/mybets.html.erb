@@ -1,0 +1,31 @@
+<head>
+  <style>
+    .table {
+      width: 800px;
+    }
+    </style>
+</head>
+
+<body>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Дата</th>
+          <th scope="col">Событие</th>
+          <th scope="col">Исход</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @mybets.each do |bet| %>
+        <tr>
+          <td><%= bet.created_at.strftime("%d %b %Y %H:%M") %></td>
+          <td><%= bet.ratio %></td>
+          <td><%= bet.bet_amount %></td>
+          <% bet.each do |item|%>
+          <td><%= item.bet_items.choise %></td>
+          <td><%= item.events.team1 %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+</body>

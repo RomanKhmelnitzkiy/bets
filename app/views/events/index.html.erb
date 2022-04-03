@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+    .table {
+      width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    </style>
+  </head>
+  <body>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" colspan="3">
+            <% if @category == nil %>
+            Все события
+            <% else %>
+            <%= @category.title %>
+            <% end %>
+          </th>
+          <th scope="col">1</th>
+          <th scope="col">X</th>
+          <th scope="col">2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+        <tr>
+          <td>
+          <% if event.dattime.past?%>
+          Завершен
+          <% else %>
+          <%= event.dattime.strftime("%d %b %Y %H:%M")%>
+          <% end %>
+          </td>
+          <td><%= event.team1%></td>
+          <td><%= event.team2%></td>
+          <td><%= event.win_ratio_1%></td>
+          <td><%= event.draw_ratio%></td>
+          <td><%= event.win_ratio_2%></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

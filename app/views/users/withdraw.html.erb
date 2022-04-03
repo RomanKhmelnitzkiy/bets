@@ -1,0 +1,26 @@
+<head>
+  <style>
+    body {
+      width: 700px;
+    }
+    </style>
+</head>
+
+<body>
+  <h2 style="text-align: center">Вывод средств</h2>
+  <div>
+    <form action="/withdraw" method="POST">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" name="money">
+        <label for="floatingInput">Введите сумму</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control">
+        <label for="floatingPassword">Номер карты</label>
+      </div>
+      <hr>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-primary" style="width: 700px;">Продолжить</button>
+    </form>
+  </div>
+</body>

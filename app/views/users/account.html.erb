@@ -1,0 +1,36 @@
+<head>
+  <style>
+    body {
+      width: 700px;
+    }
+    </style>
+</head>
+
+<body>
+  <% if @account.role == "user" %>
+  <div>
+    <h3><%= @account.email%></h3>
+    <h3>Баланс: <%= @account.money%></h3>
+    <hr>
+    <a href="/my-bets/<%=@account.id%>"><button type="button" class="btn btn-primary" style="width: 700px;">Мои ставки</button></a>
+    <hr>
+    <a href="/deposit/<%=@account.id%>"><button type="button" class="btn btn-primary" style="width: 700px;">Пополнить счет</button></a>
+    <hr>
+    <a href="/withdraw"><button type="button" class="btn btn-primary" style="width: 700px;">Вывести средства</button></a>
+    <hr>
+    <a href="/statement"><button type="button" class="btn btn-primary" style="width: 700px;">История платежей</button></a>
+    <hr>
+    <a href="#"><button type="button" class="btn btn-primary" style="width: 700px;">Выйти</button>
+  </div>
+  <% elsif @account.role == "admin" %>
+  <div>
+    <h3><%= @account.email%></h3>
+    <hr>
+    <a href="event/create"><button type="button" class="btn btn-primary" style="width: 700px;">Создать событие</button></a>
+    <hr>
+    <a href="event/update"><button type="button" class="btn btn-primary" style="width: 700px;">Обновить событие</button></a>
+    <hr>
+    <a href="#"><button type="button" class="btn btn-primary" style="width: 700px;">Выйти</button><a>
+  </div>
+  <% end %>
+</body>
