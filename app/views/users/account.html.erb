@@ -1,12 +1,15 @@
 <head>
   <style>
-    body {
+    .main {
       width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
     </style>
 </head>
 
 <body>
+  <div class="main">
   <% if @account.role == "user" %>
   <div>
     <h3><%= @account.email%></h3>
@@ -37,4 +40,5 @@
     </form>
   </div>
   <% end %>
+  </div>
 </body>

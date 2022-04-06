@@ -30,6 +30,7 @@ class EventsController < ApplicationController
           dattime: params[:dattime], category: Category.find_by(alias: params[:category])})
         redirect_to "/"
       elsif $User.role == "user"
+        redirect_to "/"
         flash[:alert] = "У вас нет прав администратора."
       end
     rescue

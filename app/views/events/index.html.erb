@@ -25,13 +25,14 @@
           <th scope="col">1</th>
           <th scope="col">X</th>
           <th scope="col">2</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <% @events.each do |event| %>
         <tr>
           <td>
-          <% if event.dattime.past?%>
+          <% if event.result.present?%>
           Завершен
           <% else %>
           <%= event.dattime.strftime("%d %b %Y %H:%M")%>
@@ -42,6 +43,19 @@
           <td><%= event.win_ratio_1%></td>
           <td><%= event.draw_ratio%></td>
           <td><%= event.win_ratio_2%></td>
+          <td>
+            <% if current_user.present? %>
+              <% if current_user.role == "user" %>
+                <% if current_user.bets.include?(event) %>
+                <button type="button" class="btn btn-primary" style="width: 100px;">Удалить из купона</button>
+                <% else %>
+                <button type="button" class="btn btn-primary" style="width: 100px;">Добавить в купон</button>
+                <% end %>
+              <% elsif current_user.role == "admin"%>
+                <button type="button" class="btn btn-primary" style="width: 100px;">Обновить</button>
+              <% end %>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>

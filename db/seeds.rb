@@ -8,8 +8,8 @@
 
 User.create(:email => "kiki@gmail.com", :password => "1234", :money => "0", :role => "admin")
 User.create(:email => "gg@ya.ru", :password => "1234", :money => "100", :role => "user")
-Category.create(:alias => "football", :title => "Футбол")
-Category.create(:alias => "hockey", :title => "Хоккей")
-Category.create(:alias => "futsal", :title => "Футзал")
-Category.create(:alias => "basketball", :title => "Баскетбол")
-Category.create(:alias => "handball", :title => "Гандбол")
+#Category.create(:alias => "football", :title => "Футбол")
+#Category.create(:alias => "hockey", :title => "Хоккей")
+#Category.create(:alias => "futsal", :title => "Футзал")
+#Category.create(:alias => "basketball", :title => "Баскетбол")
+#Category.create(:alias => "handball", :title => "Гандбол")

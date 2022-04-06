@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'event/:category', to: 'events#category'
   #get 'event/:id', to: 'events#show', constraint: { id: /\d+/ }
   
+  get 'bet', to: 'bets#new'
   post 'bet', to: 'bets#make_bet'
 
   get 'users', to: 'users#index'
@@ -16,9 +17,9 @@ Rails.application.routes.draw do
   get 'user/new', to: 'users#new'
   post 'user/create', to: 'users#create'
 
-  get 'user/login', to: 'users#login'
-  post 'user/login', to: 'users#login_post'
-  post 'user/logout', to: 'users#logout'
+  get 'user/login', to: 'sessions#new'
+  post 'user/login', to: 'sessions#create'
+  post 'user/logout', to: 'sessions#destroy'
 
   get 'my-account', to: 'users#account'
 

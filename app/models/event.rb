@@ -12,7 +12,7 @@ class Event < ApplicationRecord
   
     def dattime_cannot_be_in_the_past
       if dattime < Time.now
-        then errors.add(:dattime, "cannot be in the past")
+        then flash[:alert] = "Дата и/или время не могут быть в прошлом."
       end
     end
   

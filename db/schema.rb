@@ -16,9 +16,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_27_110111) do
 
   create_table "account_statements", force: :cascade do |t|
     t.decimal "amount"
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_account_statements_on_user_id"
   end
 
@@ -56,7 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_27_110111) do
     t.decimal "win_ratio_1"
     t.decimal "win_ratio_2"
     t.decimal "draw_ratio"
-    t.datetime "dattime"
+    t.datetime "dattime", precision: nil
     t.string "result"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -65,14 +65,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_27_110111) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "password"
+    t.string "email", null: false
+    t.string "password_digest"
     t.decimal "money"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "apitoken"
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "account_statements", "users"
   add_foreign_key "bets", "users"
+  add_foreign_key "events", "categories"
 end

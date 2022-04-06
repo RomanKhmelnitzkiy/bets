@@ -50,8 +50,13 @@
                 </li>
             </ul>
 
-            <% if $User.present? %>
+            <% if current_user.present? %>
             <span>
+              <% if current_user.role == "user" %>
+                <a href="/bet">
+                  <button type="button" class="btn btn-success">Купон</button>
+                </a>
+              <% end %>
                 <a href="/my-account">
                   <button type="button" class="btn btn-success">Аккаунт</button>
                 </a>         

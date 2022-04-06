@@ -5,46 +5,29 @@ class UsersController < ApplicationController
   end
     
   def new
-    @users = User.all
+    @user = User.new
   end
 
   def create
-    if User.find_by(email: [:email]).present?
-      $User = User.new({email: params[:email], password: params[:password], role: "user", money: 0})
-      if $User.save
+    if User.find_by(email: [:email]).blank?
+      @user = User.new({email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation], role: "user", money: 0})
+      if @user.save
+        session[:user_id] = @user.id
         redirect_to "/my-account"
-        flash[:alert] = "Добро пожаловать, #{$User.email}."
+        flash[:alert] = "Добро пожаловать, #{current_user.email}."
       else
-
+        flash[:success] = "Form is invalid"
+        redirect_to "/user/new"
       end
     else
       redirect_to "/user/new"
       flash[:success] = "Пользователь с таким email уже существует."
     end
   end
-    
-  def login
-  end
-
-  def login_post
-    $User = User.find_by email: params[:email]
-    if $User.nil?
-      redirect_to "/user/login"
-      flash[:alert] = "Логин и/или пароль неверный."
-    else 
-      redirect_to "/my-account"
-      flash[:alert] = "Добро пожаловать, #{$User.email}."
-    end
-  end
-
-  def logout
-    $User = nil
-    redirect_to "/"
-  end
 
   def account
     begin
-      @account = $User
+      @account = current_user
       redirect_to "/" if @account.nil?
     rescue 
       redirect_to "/"
@@ -53,7 +36,7 @@ class UsersController < ApplicationController
     
   def mybets
     begin
-      @mybets = Bet.all.select {|as| as.user_id = $User.id}
+      @mybets = current_user.bets
       redirect_to "/" if @mybets.nil?
     rescue
       redirect_to "/"
@@ -62,7 +45,7 @@ class UsersController < ApplicationController
   
   def statement
     begin
-      @stat = AccountStatement.all.select {|as| as.user_id = $User.id} 
+      @stat = current_user.account_statements
       redirect_to "/" if @stat.nil?
     rescue
       redirect_to "/"
@@ -71,7 +54,7 @@ class UsersController < ApplicationController
 
   def deposit
     begin
-      redirect_to "/" if $User.nil?
+      redirect_to "/" if current_user.nil?
     rescue 
       redirect_to "/"
     end
@@ -79,12 +62,12 @@ class UsersController < ApplicationController
 
   def make_deposit
     begin
-      if $User.role == "user"
-        deposit = AccountStatement.create(amount: "-#{params[:money]}", user_id: $User.id)
-        $User.update!(money: $User.money + params[:money].to_f)
+      if current_user.role == "user"
+        deposit = AccountStatement.create(amount: "-#{params[:money]}", user_id: current_user.id)
+        current_user.update!(money: current_user.money + params[:money].to_f)
         redirect_to "/my-account"
         flash[:alert] = "Счет пополнен."
-      elsif $User.role == "admin"
+      elsif current_user.role == "admin"
         redirect_to "/my-account"
         flash[:alert] = "Админ не может пополнить счет."
       end
@@ -96,7 +79,7 @@ class UsersController < ApplicationController
   
   def withdraw
     begin
-      redirect_to "/" if $User.nil?
+      redirect_to "/" if current_user.nil?
     rescue 
       redirect_to "/"
     end
@@ -104,17 +87,17 @@ class UsersController < ApplicationController
 
   def make_withdraw
     begin
-      if $User.role == "user"
-        if $User.money >= params[:money].to_f
-          withdraw = AccountStatement.create(amount: +params[:money], user_id: $User.id)
-          $User.update!(money: $User.money - params[:money].to_f)
+      if current_user.role == "user"
+        if current_user.money >= params[:money].to_f
+          withdraw = AccountStatement.create(amount: params[:money], user_id: current_user.id)
+          current_user.update!(money: current_user.money - params[:money].to_f)
           redirect_to "/my-account"
           flash[:alert] = "Вывод средств выполнен."
         else
           redirect_to "/my-account"
           flash[:alert] = "У вас недостаточно средств."
         end
-      elsif $User.role == "admin"
+      elsif current_user.role == "admin"
         redirect_to "/my-account"
         flash[:alert] = "Админ не может вывести средства."
       end

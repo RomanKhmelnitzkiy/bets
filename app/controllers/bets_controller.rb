@@ -1,13 +1,13 @@
 class BetsController < ApplicationController
 
-  def new_bet
+  def new
     
   end
 
   def make_bet
-    if @@User
-      if @@User.role == "user"
-        if @@User.money >= params[:bet_amount].to_f
+    if $User.present?
+      if $User.role == "user"
+        if $User.money >= params[:bet_amount].to_f
   
           @bet = Bet.create!({user_id: @@User.id, bet_amount: params[:bet_amount]})
           
@@ -28,15 +28,18 @@ class BetsController < ApplicationController
           end
           
           @bet.save
-          @@User.update!(money: @@User.money - params[:bet_amount].to_f)
-          render :json => [{"message": "Bet is done"}, @bet]
-        
+          $User.update!(money: @@User.money - params[:bet_amount].to_f)
+          
+          redirect_to "/my-account"
+          flash[:alert] = "Ставка сделана."
         else
-          render :json => {"message": "You don't have enough money to make bet"}   
+          redirect_to "/my-account"
+          flash[:alert] = "У вас недостаточно средств."   
         end
       end
     else
-      render :json => {:message => "You are not authorized"}
+      redirect_to "/"
+      flash[:alert] = "Пожалуйста, войдите в аккаунт."
     end
   end
 
