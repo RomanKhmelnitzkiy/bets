@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   get 'event/index'
 
   get 'event/new', to: 'events#new'
@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   
   get 'bet', to: 'bets#new'
   post 'bet', to: 'bets#make_bet'
+
+  post '/event/add_to_cart/:id', to: 'events#add_to_cart'
+  post '/event/remove_from_cart/:id', to: 'events#remove_from_cart'
 
   get 'users', to: 'users#index'
 
@@ -33,4 +36,5 @@ Rails.application.routes.draw do
   get 'statement', to: 'users#statement'
   
   root to: 'events#index'
+  
 end

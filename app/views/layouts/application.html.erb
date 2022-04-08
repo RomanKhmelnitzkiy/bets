@@ -56,6 +56,10 @@
                 <a href="/bet">
                   <button type="button" class="btn btn-success">Купон</button>
                 </a>
+              <% elsif current_user.role == "admin" %>
+                <a href="/event/new">
+                  <button type="button" class="btn btn-success">Создать событие</button>
+                </a>
               <% end %>
                 <a href="/my-account">
                   <button type="button" class="btn btn-success">Аккаунт</button>

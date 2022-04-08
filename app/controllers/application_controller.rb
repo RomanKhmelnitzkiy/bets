@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authorize
-  #before_action :initialize_session
+  before_action :initialize_session
+  before_action :load_cart
 
 
   def current_user
@@ -9,6 +10,14 @@ class ApplicationController < ActionController::Base
 
   def user_signed_in?
     current_user.present?
+  end
+
+  def initialize_session
+    session[:cart] ||= []
+  end
+
+  def load_cart
+    @cart = Event.find(session[:cart])
   end
 
   helper_method :current_user, :user_signed_in?

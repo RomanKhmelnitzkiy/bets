@@ -45,14 +45,25 @@
           <td><%= event.win_ratio_2%></td>
           <td>
             <% if current_user.present? %>
-              <% if current_user.role == "user" %>
-                <% if current_user.bets.include?(event) %>
-                <button type="button" class="btn btn-primary" style="width: 100px;">Удалить из купона</button>
-                <% else %>
-                <button type="button" class="btn btn-primary" style="width: 100px;">Добавить в купон</button>
+              <% if event.result.present? %>
+
+              <% else %>
+                <% if current_user.role == "user" %>
+                  <% if @cart.include?(event) %>
+                  <form action="/event/remove_from_cart/<%= event.id %>" method="POST">
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                    <button type="submit" class="btn btn-primary" style="width: 100px;">Удалить из купона</button>
+                  </form>
+                  <% else %>
+                  <form action="/event/add_to_cart/<%= event.id %>" method="POST">
+                    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                    <button type="submit" class="btn btn-primary" style="width: 100px;">Добавить в купон</button>
+                  </form>
+                  <% end %>
+                <% elsif current_user.role == "admin"%>
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <button type="button" class="btn btn-primary" style="width: 100px;">Обновить</button>
                 <% end %>
-              <% elsif current_user.role == "admin"%>
-                <button type="button" class="btn btn-primary" style="width: 100px;">Обновить</button>
               <% end %>
             <% end %>
           </td>

@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
       user = User.find_by email: params[:email]
       if user&.authenticate(params[:password])
         session[:user_id] = user.id
+        session[:cart] = []
         redirect_to "/my-account"
         flash[:alert] = "Добро пожаловать, #{current_user.email}."
       else 
@@ -16,6 +17,7 @@ class SessionsController < ApplicationController
     end
   
     def destroy
+      session.delete :cart
       session.delete :user_id
       @current_user = nil
       flash[:alert] = "До скорой встречи!"
