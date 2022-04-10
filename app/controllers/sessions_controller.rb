@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :require_no_current_user, only: %i[new create]
+  before_action :require_current_user, only: %i[destroy]
 
     def new
     end
@@ -19,7 +21,7 @@ class SessionsController < ApplicationController
     def destroy
       session.delete :cart
       session.delete :user_id
-      @current_user = nil
+      current_user = nil
       flash[:alert] = "До скорой встречи!"
       redirect_to "/"
     end

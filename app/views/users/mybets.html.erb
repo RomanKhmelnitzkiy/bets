@@ -1,35 +1,69 @@
 <head>
   <style>
     .main {
-      width: 700px;
+      width: 800px;
       margin-left: auto;
       margin-right: auto;
+    }
+    .bet{
+      margin: 10px 0px 20px 0px;
+      background-color: #91cccc; 
     }
     </style>
 </head>
 
 <body>
 <div class="main">
+  <% @mybets.each do |bet| %>
+    <div class="bet">
+    <div>
+    <div>Время: <%= bet.created_at.strftime("%d %b %Y %H:%M") %></div>
+    <div>Поставлено: <%= bet.bet_amount %></div>
+    <div>Коэффициент: <%= bet.bet_amount %></div>
+    <div>Результат: <%= bet.result %></div>
+    </div>
+    События
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Дата</th>
-          <th scope="col">Событие</th>
-          <th scope="col">Исход</th>
+          <th scope="col" colspan="3"></th>
+          <th scope="col">1</th>
+          <th scope="col">X</th>
+          <th scope="col">2</th>
+          <th scope="col">Выбор</th>
+          <th scope="col">Результат</th>
         </tr>
       </thead>
       <tbody>
-        <% @mybets.each do |bet| %>
+        <% bet.bet_items.each do |item| %>
         <tr>
-          <td><%= bet.created_at.strftime("%d %b %Y %H:%M") %></td>
-          <td><%= bet.ratio %></td>
-          <td><%= bet.bet_amount %></td>
-          <% bet.each do |item|%>
-          <td><%= item.bet_items.choise %></td>
-          <td><%= item.events.team1 %></td>
+          <td>
+          <% if item.event.result.present?%>
+          Завершен
+          <% else %>
+          <%= item.event.dattime.strftime("%d %b %Y %H:%M")%>
+          <% end %>
+          </td>
+          <td><%= item.event.team1%></td>
+          <td><%= item.event.team2%></td>
+          <td><%= item.event.win_ratio_1%></td>
+          <td><%= item.event.draw_ratio%></td>
+          <td><%= item.event.win_ratio_2%></td>
+          <td>
+            <%= item.choise %>
+          </td>
+          <td>
+          <% if item.event.result.present? %>
+            <%=item.event.result %>
+          <% else %>
+
+          <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>
     </table>
     </div>
+  <% end %> 
+</div>
 </body>

@@ -7,10 +7,15 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .bt {
+      width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     </style>
   </head>
   <body>
-
+  <form action="/bet" method="POST">
     <table class="table">
       <thead>
         <tr>
@@ -23,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @cart.each do |event| %>
+        <% @cart.each_with_index do |event, i| %>
         <tr>
           <td><%= event.dattime.strftime("%d %b %Y %H:%M")%></td>
           <td><%= event.team1%></td>
@@ -31,13 +36,13 @@
           <td><%= event.win_ratio_1%></td>
           <td><%= event.draw_ratio%></td>
           <td><%= event.win_ratio_2%></td>
-          <td>
-            <form action="/user/logout" method="POST">
-                <span class="form-floating mb-3">      
-                <input type="text" class="form-control" name="money" style="width: 100px;">
-                <label for="floatingInput">Выбор</label>
-                </span>
-            </form>
+          <td>    
+            <select class="form-select" aria-label="Default select example" name="choise[]" style="width: 150px;">
+              <option selected>Выберите</option>
+              <option>win1</option>
+              <option>win2</option>
+              <option>draw</option>
+            </select>
           </td>
           <td>
             <% if @cart.include?(event) %>
@@ -51,5 +56,15 @@
         <% end %>
       </tbody>
     </table>
+    <hr>
+    <% if @cart.present?%>
+    <div class="bt">
+      <input class="form-control" type="number" step="any" name="bet_amount" style="width: 150px;">
+      <label for="floatingInput">Сумма ставки</label>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-primary" style="width: 500px;">Поставить</button>
+    </div>
+    <% end %>
+  </form>
   </body>
 </html>

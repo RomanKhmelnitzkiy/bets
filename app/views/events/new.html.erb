@@ -13,7 +13,7 @@
   <div class="main">
     <form action="/event/create" method="POST">
       <div class="form-floating mb-3">
-        <input type="datetime" class="form-control" name="dattime">
+        <input type="datetime-local" class="form-control" name="dattime">
         <label for="floatingInput">Дата и время</label>
       </div>
       <div class="form-floating">
@@ -25,20 +25,26 @@
         <label for="floatingInput">Вторая команда</label>
       </div>
       <div class="form-floating">
-        <input class="form-control" name="win_ratio_1">
+        <input class="form-control" type="number" step="any" name="win_ratio_1">
         <label for="floatingInput">Победит первая команда</label>
       </div>
       <div class="form-floating">
-        <input class="form-control" name="win_ratio_2">
+        <input class="form-control" type="number" step="any" name="win_ratio_2">
         <label for="floatingInput">Победит вторая команда</label>
       </div>
       <div class="form-floating">
-        <input class="form-control" name="draw_ratio">
+        <input class="form-control" type="number" step="any" name="draw_ratio">
         <label for="floatingInput">Ничья</label>
       </div>
       <div class="form-floating">
-        <input class="form-control" name="category">
-        <label for="floatingInput">Категория</label>
+        <select class="form-select" aria-label="Default select example" name="category">
+          <option selected>Выберите категорию</option>
+          <option>football</option>
+          <option>hockey</option>
+          <option>futsal</option>
+          <option>basketball</option>
+          <option>handball</option>
+        </select>
       </div>
       <hr>
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>

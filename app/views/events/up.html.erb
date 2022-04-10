@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+    .table {
+      width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .bt {
+      width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    </style>
+  </head>
+  <body>
+  <form action="/event/update/<%=@event.id%>" method="POST">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" colspan="3"></th>
+          <th scope="col">1</th>
+          <th scope="col">X</th>
+          <th scope="col">2</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @event.dattime.strftime("%d %b %Y %H:%M")%></td>
+          <td><%= @event.team1%></td>
+          <td><%= @event.team2%></td>
+          <td><%= @event.win_ratio_1%></td>
+          <td><%= @event.draw_ratio%></td>
+          <td><%= @event.win_ratio_2%></td>
+          <td>  
+            <select class="form-select" aria-label="Default select example" name="result" style="width: 150px;">
+              <option selected>Выберите</option>
+              <option>win1</option>
+              <option>win2</option>
+              <option>draw</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+    <div class="bt">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <button type="submit" class="btn btn-primary" style="width: 500px;">Обновить</button>
+    </div>
+  </form>
+  </body>
+</html>

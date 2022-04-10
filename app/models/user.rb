@@ -5,6 +5,8 @@ class User < ApplicationRecord
   validates :email, :password_digest, :role, :money, presence: true
   validates :email, uniqueness: true, format: /\A[a-z0-9\+\-_\.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :money, numericality: {:greater_than_or_equal_to => 0}
+  validates :password, confirmation: true
+
 
   after_create :generate_apitoken
 

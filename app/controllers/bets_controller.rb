@@ -1,26 +1,34 @@
 class BetsController < ApplicationController
 
+  def index
+    render :json => Bet.all
+  end
+
+  def items
+    render :json => BetItem.all
+  end
+  
   def new
     
   end
 
   def make_bet
-    if $User.present?
-      if $User.role == "user"
-        if $User.money >= params[:bet_amount].to_f
+    if current_user.present?
+      if current_user.role == "user"
+        if current_user.money >= params[:bet_amount].to_f
   
-          @bet = Bet.create!({user_id: @@User.id, bet_amount: params[:bet_amount]})
+          @bet = Bet.create!({user_id: current_user.id, bet_amount: params[:bet_amount]})
           
           i = 0
-          while params[:event_id][i] and  params[:choise][i] do
-            BetItem.create!({bet_id: @bet.id, event_id: params[:event_id][i], choise: params[:choise][i]})
+          while @cart[i] and params[:choise][i] do
+            BetItem.create!({bet_id: @bet.id, event_id: @cart[i].id, choise: params[:choise][i]})
             i += 1
           end
   
           i = 0
           @bet.ratio = 1
-  
-          while (params[:event_id][i] and params[:choise][i]) do
+
+          while (@cart[i] and params[:choise][i]) do
             @bet.ratio *= @bet.events[i].win_ratio_1 if @bet.bet_items[i].choise == "win1"
             @bet.ratio *= @bet.events[i].win_ratio_2 if @bet.bet_items[i].choise == "win2"
             @bet.ratio *= @bet.events[i].draw_ratio if @bet.bet_items[i].choise == "draw" 
@@ -28,14 +36,18 @@ class BetsController < ApplicationController
           end
           
           @bet.save
-          $User.update!(money: @@User.money - params[:bet_amount].to_f)
+          current_user.update!(money: current_user.money - params[:bet_amount].to_f)
           
           redirect_to "/my-account"
           flash[:alert] = "Ставка сделана."
+          session[:cart] = []
         else
           redirect_to "/my-account"
           flash[:alert] = "У вас недостаточно средств."   
         end
+      else
+        redirect_to "/"
+        flash[:alert] = "Админ не может ставить."
       end
     else
       redirect_to "/"

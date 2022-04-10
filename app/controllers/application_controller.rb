@@ -20,6 +20,18 @@ class ApplicationController < ActionController::Base
     @cart = Event.find(session[:cart])
   end
 
+  def require_no_current_user
+    return if !user_signed_in?
+    flash[:alert] = "Вы уже вошли."
+    redirect_to "/"
+  end
+
+  def require_current_user
+    return if user_signed_in?
+    flash[:alert] = "Вы еще не вошли."
+    redirect_to "/"
+  end
+
   helper_method :current_user, :user_signed_in?
 
   def authorize

@@ -11,7 +11,10 @@
     </style>
   </head>
   <body>
-
+    <form class="d-flex" action="/search" method="GET" style="width: 300px; margin: 10px 100px 10px 100px;">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
+      <button class="btn btn-outline-success" type="submit">Поиск</button>
+    </form>
     <table class="table">
       <thead>
         <tr>
@@ -44,10 +47,10 @@
           <td><%= event.draw_ratio%></td>
           <td><%= event.win_ratio_2%></td>
           <td>
+          <% if event.result.present? %>
+            <%=event.result %>
+          <% else %>
             <% if current_user.present? %>
-              <% if event.result.present? %>
-
-              <% else %>
                 <% if current_user.role == "user" %>
                   <% if @cart.include?(event) %>
                   <form action="/event/remove_from_cart/<%= event.id %>" method="POST">
@@ -61,11 +64,15 @@
                   </form>
                   <% end %>
                 <% elsif current_user.role == "admin"%>
+                <a href="event/update/<%= event.id %>">
                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                   <button type="button" class="btn btn-primary" style="width: 100px;">Обновить</button>
+                </a>
+                <% else %>
+                
                 <% end %>
-              <% end %>
             <% end %>
+          <% end %>
           </td>
         </tr>
         <% end %>

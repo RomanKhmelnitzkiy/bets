@@ -1,10 +1,15 @@
 class EventsController < ApplicationController
   def index
-    @events = Event.all
+    @events = Event.all.where(dattime: (Time.now.midnight - 2.day)..Time.now.midnight + 5.day).order(dattime: :asc)
   end
     
   def show
     Event.find_by(:id => params[:id])
+  end
+
+  def search
+    @events = Event.where("team1 ILIKE ?", "%" + params[:q] + "%").or(Event.where("team2 ILIKE ?", "%" + params[:q] + "%"))
+    render 'index'
   end
     
   def category
@@ -39,19 +44,24 @@ class EventsController < ApplicationController
     end
   end
     
+  def up
+    @event = Event.find(params[:id])
+  end
+
   def update
     begin
       if current_user.role == "admin"
-        event = Event.find_by(:id => params[:id])
-        event.update!(result: params[:result])
-        flash[:alert] = "Резельтат: #{event.result}"
+        @event = Event.find(params[:id])
+        @event.update!(result: params[:result])
+        redirect_to "/"
+        flash[:alert] = "Резельтат: #{@event.result}"
       elsif current_user.role == "user"
         redirect_to "/"
         flash[:alert] = "У вас нет прав администратора."
       end
     rescue
       redirect_to "/"
-      flash[:alert] = "Пожалуйста, проверьте правильность введенных данных.."
+      flash[:alert] = "Пожалуйста, проверьте правильность введенных данных."
     end
   end
 

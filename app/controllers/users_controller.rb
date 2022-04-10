@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :require_no_current_user, only: %i[new create]
 
   def index
     render :json => User.all
@@ -9,19 +10,19 @@ class UsersController < ApplicationController
   end
 
   def create
-    if User.find_by(email: [:email]).blank?
+    if User.find_by(email: params[:email]).blank?
       @user = User.new({email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation], role: "user", money: 0})
       if @user.save
         session[:user_id] = @user.id
         redirect_to "/my-account"
         flash[:alert] = "Добро пожаловать, #{current_user.email}."
       else
-        flash[:success] = "Form is invalid"
+        flash[:alert] = "Форма заполнена неверно. E-mail должен быть похож на e-mail. Пароль должен содержать от 6 до 50 символов."
         redirect_to "/user/new"
       end
     else
       redirect_to "/user/new"
-      flash[:success] = "Пользователь с таким email уже существует."
+      flash[:alert] = "Пользователь с таким email уже существует."
     end
   end
 
