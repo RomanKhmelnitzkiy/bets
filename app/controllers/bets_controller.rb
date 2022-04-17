@@ -13,10 +13,32 @@ class BetsController < ApplicationController
   end
 
   def make_bet
+    if params[:bet_amount].to_f > 10000 || params[:bet_amount].to_f < 1
+      flash[:alert] = "Ограничение на ставку: от 1 до 10000."
+      redirect_back(fallback_location: root_path)
+      return
+    end
+
+    @cart.each do |el|
+      if el.dattime < Time.now
+        flash[:alert] = "Нельзя поставить на событие, которое уже началось."
+        redirect_back(fallback_location: root_path)
+        return
+      end
+    end
+
     if current_user.present?
       if current_user.role == "user"
         if current_user.money >= params[:bet_amount].to_f
-  
+
+          params[:choise].each do |el|
+            if el == "Выберите"
+              flash[:alert] = "Пожалуйста, выберитие исход."
+              redirect_back(fallback_location: root_path)
+              return
+            end
+          end
+
           @bet = Bet.create!({user_id: current_user.id, bet_amount: params[:bet_amount]})
           
           i = 0

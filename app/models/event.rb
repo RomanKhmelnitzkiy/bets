@@ -2,7 +2,7 @@ class Event < ApplicationRecord
     validates :result, inclusion: { in: %w(win1 win2 draw) }, allow_nil: true
     validates :team1, :team2, :win_ratio_1, :win_ratio_2, :draw_ratio, :dattime, presence: true
     validates :win_ratio_1, :win_ratio_2, :draw_ratio, numericality: {greater_than: 1}
-    validate :dattime_cannot_be_in_the_past
+    #validate :dattime_cannot_be_in_the_past
   
     belongs_to :category
     has_many :bet_items

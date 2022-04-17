@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @cart.each_with_index do |event, i| %>
+        <% @cart.each do |event| %>
         <tr>
           <td><%= event.dattime.strftime("%d %b %Y %H:%M")%></td>
           <td><%= event.team1%></td>
@@ -45,12 +45,10 @@
             </select>
           </td>
           <td>
-            <% if @cart.include?(event) %>
-            <form action="/event/remove_from_cart/<%= event.id %>" method="POST">
+            <!-- <form action="/event/remove_from_cart/<%= event.id %>" method="POST" id="del">
                 <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-                <button type="submit" class="btn btn-primary" style="width: 100px;">Удалить из купона</button>
-            </form>
-            <% end %>
+                <button type="submit" form="del" class="btn btn-primary" style="width: 100px;">Удалить из купона</button>
+            </form> --> 
           </td>
         </tr>
         <% end %>

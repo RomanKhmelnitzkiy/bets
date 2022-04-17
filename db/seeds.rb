@@ -6,8 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create(:email => "kiki@gmail.com", :password => "1234", :money => "0", :role => "admin")
-User.create(:email => "gg@ya.ru", :password => "1234", :money => "100", :role => "user")
+User.create(:email => "admin@gmail.com", :password => "1234", :password_confirmation => "1234" , :money => "0", :role => "admin")
+User.create(:email => "user@gmail.com", :password => "1234", :password_confirmation => "1234" , :money => "0", :role => "user")
 #Category.create(:alias => "football", :title => "Футбол")
 #Category.create(:alias => "hockey", :title => "Хоккей")
 #Category.create(:alias => "futsal", :title => "Футзал")

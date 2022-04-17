@@ -47,7 +47,6 @@ class UsersController < ApplicationController
   def statement
     begin
       @stat = current_user.account_statements
-      redirect_to "/" if @stat.nil?
     rescue
       redirect_to "/"
     end
@@ -63,6 +62,11 @@ class UsersController < ApplicationController
 
   def make_deposit
     begin
+      if params[:money].to_f > 10000 || params[:money].to_f < 1
+        flash[:alert] = "Ограничение на пополнение: от 1 до 10000."
+        redirect_back(fallback_location: root_path)
+        return
+      end
       if current_user.role == "user"
         deposit = AccountStatement.create(amount: "-#{params[:money]}", user_id: current_user.id)
         current_user.update!(money: current_user.money + params[:money].to_f)
@@ -88,9 +92,14 @@ class UsersController < ApplicationController
 
   def make_withdraw
     begin
+      if params[:money].to_f > 10000 || params[:money].to_f < 1
+        flash[:alert] = "Ограничение на вывод средств: от 1 до 10000."
+        redirect_back(fallback_location: root_path)
+        return
+      end
       if current_user.role == "user"
         if current_user.money >= params[:money].to_f
-          withdraw = AccountStatement.create(amount: params[:money], user_id: current_user.id)
+          withdraw = AccountStatement.create(amount: "+#{params[:money]}", user_id: current_user.id)
           current_user.update!(money: current_user.money - params[:money].to_f)
           redirect_to "/my-account"
           flash[:alert] = "Вывод средств выполнен."
