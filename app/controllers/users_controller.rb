@@ -47,6 +47,7 @@ class UsersController < ApplicationController
   def statement
     begin
       @stat = current_user.account_statements
+      redirect_to "/" if @stat.nil?
     rescue
       redirect_to "/"
     end
