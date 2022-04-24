@@ -23,6 +23,8 @@
     <hr>
     <a href="/statement"><button type="button" class="btn btn-primary" style="width: 700px;">История платежей</button></a>
     <hr>
+    <a href="/statement_pdf"><button type="button" class="btn btn-primary" style="width: 700px;">История платежей в формате PDF</button></a>
+    <hr>
     <form action="/user/logout" method="POST">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <button type="submit" class="btn btn-primary" style="width: 700px;">Выйти</button>
@@ -33,6 +35,8 @@
     <h3><%= @account.email%></h3>
     <hr>
     <a href="/event/new"><button type="button" class="btn btn-primary" style="width: 700px;">Создать событие</button></a>
+    <hr>
+    <a href="/events/download_json"><button type="button" class="btn btn-primary" style="width: 700px;">Выгрузить все события</button></a>
     <hr>
     <form action="/user/logout" method="POST">
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>

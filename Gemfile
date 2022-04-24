@@ -31,6 +31,8 @@ gem 'webpacker', '~> 5.1'
 
 gem 'devise', '~> 4.8', '>= 4.8.1'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

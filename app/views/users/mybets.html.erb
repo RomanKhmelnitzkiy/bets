@@ -19,7 +19,7 @@
     <div>
     <div>Время: <%= bet.created_at.strftime("%d %b %Y %H:%M") %></div>
     <div>Поставлено: <%= bet.bet_amount %></div>
-    <div>Коэффициент: <%= bet.bet_amount %></div>
+    <div>Коэффициент: <%= bet.ratio %></div>
     <div>Результат: <%= bet.result %></div>
     </div>
     События
@@ -27,9 +27,9 @@
       <thead>
         <tr>
           <th scope="col" colspan="3"></th>
-          <th scope="col">1</th>
+          <th scope="col">П1</th>
           <th scope="col">X</th>
-          <th scope="col">2</th>
+          <th scope="col">П2</th>
           <th scope="col">Выбор</th>
           <th scope="col">Результат</th>
         </tr>

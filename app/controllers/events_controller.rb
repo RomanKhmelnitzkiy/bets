@@ -83,4 +83,63 @@ class EventsController < ApplicationController
     redirect_back(fallback_location: root_path)
   end
   
+  def create_via_upload
+    if current_user.role == "admin"
+      if params[:file].nil?
+        flash[:alert] = "Загрузите файл."
+        redirect_back(fallback_location: root_path)
+        return
+      end 
+      if params[:file].content_type != "application/json" 
+        flash[:alert] = "Файл должен быть формата JSON."
+        redirect_back(fallback_location: root_path)
+        return
+      end
+
+      file = File.open(params[:file], "r+")
+      if file.size == 0
+        flash[:alert] = "Файл пустой."
+        redirect_back(fallback_location: root_path)
+        return
+      end
+      
+      begin
+      events = JSON.parse(file.read)
+      file.close
+      rescue
+        flash[:alert] = "Содержимое файла не валидно."
+        redirect_back(fallback_location: root_path)
+        return
+      end
+
+      events.each do |event|
+        begin
+        Event.create!({team1: event["team1"], team2: event["team2"],
+          win_ratio_1: event["win_ratio_1"].to_f, win_ratio_2: event["win_ratio_2"].to_f, draw_ratio: event["draw_ratio"].to_f,
+          dattime: event["dattime"], category: Category.find_by(id: event["category_id"])})
+        rescue
+          flash[:alert] = "Содержимое файла не валидно."
+          redirect_back(fallback_location: root_path)
+          return
+        end
+      end
+
+      flash[:alert] = "Файл успешно загружен."
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
+  end
+
+  def download_json
+    if current_user.role == "admin"
+      file = File.new("events_all.json", "w+")
+      file.print(Event.all.to_json)
+      file.close
+      send_file "events_all.json", :type => 'application/json'
+    else
+      redirect_to "/"
+    end
+  end
+
 end

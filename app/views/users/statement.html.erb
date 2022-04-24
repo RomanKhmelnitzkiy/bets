@@ -1,4 +1,5 @@
 <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <style>
     .main {
       width: 700px;
@@ -10,10 +11,12 @@
 
 <body>
   <div class="main">
-    <table class="table">
+    <h2>История платежей</h2>
+    <table class="table" style="border-spacing: 50px 0;">
       <thead>
         <tr>
-          <th scope="col">Дата</th>
+          <th scope="col">Дата и время</th>
+          <th scope="col">Операция</th>
           <th scope="col">Сумма</th>
         </tr>
       </thead>
@@ -21,7 +24,14 @@
         <% @stat.each do |st| %>
         <tr>
           <td><%= st.created_at.strftime("%d %b %Y %H:%M")%></td>
-          <td><%= st.amount%></td>
+          <td>
+            <%if st.amount > 0%>
+              Вывод средств
+            <%else%>
+              Пополнение
+            <%end%>
+          </td>
+          <td><%= st.amount.abs%></td>
         </tr>
         <% end %>
       </tbody>

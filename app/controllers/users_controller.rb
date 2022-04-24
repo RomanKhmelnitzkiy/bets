@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     
   def mybets
     begin
-      @mybets = current_user.bets
+      @mybets = current_user.bets.order(created_at: :desc)
       redirect_to "/" if @mybets.nil?
     rescue
       redirect_to "/"
@@ -117,5 +117,15 @@ class UsersController < ApplicationController
       flash[:alert] = "Пожалуйста, войдите в аккаунт."
     end
   end
-  
+ 
+  def render_statement_pdf
+    @stat = current_user.account_statements
+    redirect_to "/" if @stat.nil?
+      render pdf: "#{@stat}",
+      page_size: 'A5',
+      template: "users/statement",
+      orientation: "portrait",
+      zoom: 1.75,
+      dpi: 75
   end
+end

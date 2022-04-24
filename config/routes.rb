@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   post '/event/remove_from_cart/:id', to: 'events#remove_from_cart'
 
   #get 'users', to: 'users#index'
-  get 'bets', to: 'bets#index'
-  get 'items', to: 'bets#items'
+  #get 'bets', to: 'bets#index'
+  #get 'items', to: 'bets#items'
 
   get 'user/new', to: 'users#new'
   post 'user/create', to: 'users#create'
@@ -37,6 +37,10 @@ Rails.application.routes.draw do
 
   get 'my-bets/', to: 'users#mybets'
   get 'statement', to: 'users#statement'
+  get 'statement_pdf', to: 'users#render_statement_pdf'
+
+  get 'events/download_json', to: 'events#download_json'
+  post 'events/create_via_upload', to: 'events#create_via_upload'
   
   root to: 'events#index'
   
