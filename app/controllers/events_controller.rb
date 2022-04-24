@@ -28,12 +28,12 @@ class EventsController < ApplicationController
   end
 
   def create
-    if params[:dattime] < Time.now
-      flash[:alert] = "Нельзя создать событие которое уже началось."
-      redirect_back(fallback_location: root_path)
-      return
-    end
     begin
+      if params[:dattime] < Time.now
+        flash[:alert] = "Нельзя создать событие которое уже началось."
+        redirect_back(fallback_location: root_path)
+        return
+      end
       if current_user.role == "admin"
         event = Event.create!({team1: params[:team1], team2: params[:team2],
           win_ratio_1: params[:win_ratio_1].to_f, win_ratio_2: params[:win_ratio_2].to_f, draw_ratio: params[:draw_ratio].to_f,
