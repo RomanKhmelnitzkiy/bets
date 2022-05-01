@@ -17,6 +17,18 @@
         <input type="number" step="any" class="form-control" name="money">
         <label for="floatingInput">Введите сумму</label>
       </div>
+      <div class="form-floating">
+        <input type="text" class="form-control">
+        <label for="floatingPassword">Номер карты</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control">
+        <label for="floatingPassword">Срок действия</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control">
+        <label for="floatingPassword">CVC/CVV</label>
+      </div>
       <hr>
       <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
       <button type="submit" class="btn btn-primary" style="width: 700px;">Продолжить</button>

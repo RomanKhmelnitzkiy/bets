@@ -51,9 +51,9 @@ class BetsController < ApplicationController
           @bet.ratio = 1
 
           while (@cart[i] and params[:choise][i]) do
-            @bet.ratio *= @bet.events[i].win_ratio_1 if @bet.bet_items[i].choise == "win1"
-            @bet.ratio *= @bet.events[i].win_ratio_2 if @bet.bet_items[i].choise == "win2"
-            @bet.ratio *= @bet.events[i].draw_ratio if @bet.bet_items[i].choise == "draw" 
+            @bet.ratio *= @cart[i].win_ratio_1 if @bet.bet_items[i].choise == "win1"
+            @bet.ratio *= @cart[i].win_ratio_2 if @bet.bet_items[i].choise == "win2"
+            @bet.ratio *= @cart[i].draw_ratio if @bet.bet_items[i].choise == "draw" 
             i += 1
           end
           

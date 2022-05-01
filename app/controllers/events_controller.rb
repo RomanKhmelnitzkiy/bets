@@ -114,6 +114,7 @@ class EventsController < ApplicationController
 
       events.each do |event|
         begin
+          next if params[:dattime] < Time.now
         Event.create!({team1: event["team1"], team2: event["team2"],
           win_ratio_1: event["win_ratio_1"].to_f, win_ratio_2: event["win_ratio_2"].to_f, draw_ratio: event["draw_ratio"].to_f,
           dattime: event["dattime"], category: Category.find_by(id: event["category_id"])})

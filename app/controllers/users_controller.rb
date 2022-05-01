@@ -17,7 +17,7 @@ class UsersController < ApplicationController
         redirect_to "/my-account"
         flash[:alert] = "Добро пожаловать, #{current_user.email}."
       else
-        flash[:alert] = "Форма заполнена неверно. E-mail должен быть похож на e-mail. Пароль должен содержать от 6 до 50 символов."
+        flash[:alert] = "Форма заполнена неверно. E-mail должен быть похож на e-mail. Все поля формы должны быть заполнены."
         redirect_to "/user/new"
       end
     else
